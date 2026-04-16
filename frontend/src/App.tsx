@@ -297,6 +297,8 @@ const App = () => {
           : []),
       ],
     },
+
+    // Default route
     {
       path: '*',
       element: <Navigate to="/" replace />,
