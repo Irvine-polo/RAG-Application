@@ -13,6 +13,8 @@ use App\Http\Controllers\System\SystemDropdownModuleController;
 use App\Http\Controllers\System\SystemSettingController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserImageController;
+use App\Http\Controllers\Rag\RagController;
+use App\Http\Controllers\Rag\KnowledgeBaseController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('auth/login', [AuthController::class, 'loginWithEmail']);
@@ -91,6 +93,16 @@ Route::middleware('auth.middleware')->group(function () {
 
     // system logs
     Route::resource('/system/logs', SystemLogController::class);
+
+    // Rag
+    Route::post('/rag/search', [RagController::class, 'search']);
+    Route::post('/rag/ingest', [RagController::class, 'ingest']);
+
+    // Knowledge Base
+    Route::post('/knowledge-base/upload',     [KnowledgeBaseController::class, 'upload']);
+    Route::get('/knowledge-base',             [KnowledgeBaseController::class, 'index']);
+    Route::get('/knowledge-base/{document}/status', [KnowledgeBaseController::class, 'status']);
+    Route::delete('/knowledge-base/{document}',     [KnowledgeBaseController::class, 'destroy']);
 });
 
 // SELECTS

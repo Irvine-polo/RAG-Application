@@ -42,6 +42,8 @@ import PrivateLayout from './02_layouts/private/private-layout';
 import SettingsLayout from './02_layouts/private/settings-layout';
 import PublicLayout from './02_layouts/public/public-layout';
 import useAuthUserStore from './05_stores/_common/auth-user-store';
+import ChatPage from './01_pages/private/admin/chat_ai/chat-page';
+import KnowledgeBasePage from './01_pages/private/admin/knowledge_base/knowledge-base-page';
 
 const App = () => {
   const { token, user } = useAuthUserStore();
@@ -53,237 +55,245 @@ const App = () => {
         // ACCOUNT TYPE | MAIN
         ...(user?.account_type === 'Main'
           ? [
-              // MAIN LAYOUT
-              {
-                element: <HomeLayout />,
-                children: [
-                  {
-                    index: true,
-                    element: <HomePage />,
-                  },
-                ],
-              },
+            // MAIN LAYOUT
+            {
+              element: <HomeLayout />,
+              children: [
+                {
+                  index: true,
+                  element: <HomePage />,
+                },
+              ],
+            },
 
-              // ADMIN LAYOUT
-              ...(user?.is_admin
-                ? [
+            // ADMIN LAYOUT
+            ...(user?.is_admin
+              ? [
+                {
+                  path: 'admin',
+                  element: <AdminLayout />,
+                  children: [
                     {
-                      path: 'admin',
-                      element: <AdminLayout />,
+                      index: true,
+                      element: <DashboardPage />,
+                    },
+                    {
+                      path: 'users',
+                      element: <UsersPage />,
                       children: [
                         {
                           index: true,
-                          element: <DashboardPage />,
+                          element: <Navigate to="active-users" replace />,
                         },
                         {
-                          path: 'users',
-                          element: <UsersPage />,
+                          path: 'active-users',
+                          element: <ActiveUsersTab />,
+                        },
+                        {
+                          path: 'archived-users',
+                          element: <ArchivedUsersTab />,
+                        },
+                        {
+                          path: 'rbac',
+                          element: <RbacTab />,
                           children: [
                             {
                               index: true,
-                              element: <Navigate to="active-users" replace />,
+                              element: <Navigate to="roles" replace />,
                             },
                             {
-                              path: 'active-users',
-                              element: <ActiveUsersTab />,
+                              path: 'roles',
+                              element: <RolesTab />,
                             },
                             {
-                              path: 'archived-users',
-                              element: <ArchivedUsersTab />,
-                            },
-                            {
-                              path: 'rbac',
-                              element: <RbacTab />,
-                              children: [
-                                {
-                                  index: true,
-                                  element: <Navigate to="roles" replace />,
-                                },
-                                {
-                                  path: 'roles',
-                                  element: <RolesTab />,
-                                },
-                                {
-                                  path: 'permissions',
-                                  element: <PermissionsTab />,
-                                },
-                              ],
-                            },
-                          ],
-                        },
-                        {
-                          path: 'systems',
-                          element: <SystemsPage />,
-                          children: [
-                            {
-                              index: true,
-                              element: (
-                                <Navigate to="system-settings" replace />
-                              ),
-                            },
-                            {
-                              path: 'system-settings',
-                              element: <SystemSettingsTab />,
-                            },
-                            {
-                              path: 'system-dropdowns',
-                              element: <SystemDropdownsPage />,
-                              children: [
-                                {
-                                  index: true,
-                                  element: <Navigate to="dropdowns" replace />,
-                                },
-                                {
-                                  path: 'dropdowns',
-                                  element: <DropdownsTab />,
-                                },
-                                {
-                                  path: 'modules',
-                                  element: <ModulesTab />,
-                                },
-                              ],
-                            },
-                            {
-                              path: 'system-logs',
-                              element: <SystemLogsTab />,
-                            },
-                          ],
-                        },
-                        {
-                          path: 'mails',
-                          element: <MailsPage />,
-                          children: [
-                            {
-                              index: true,
-                              element: <Navigate to="logs" replace />,
-                            },
-                            {
-                              path: 'logs',
-                              element: <MailLogsTab />,
-                            },
-                            {
-                              path: 'templates',
-                              element: <MailTemplatesTab />,
+                              path: 'permissions',
+                              element: <PermissionsTab />,
                             },
                           ],
                         },
                       ],
                     },
-                  ]
-                : []),
-
-              // SETTINGS LAYOUT
-              {
-                path: 'settings',
-                element: <SettingsLayout />,
-                children: [
-                  {
-                    index: true,
-                    element: <Navigate to="profile" replace />,
-                  },
-                  {
-                    path: 'profile',
-                    element: <ProfilePage />,
-                  },
-                  {
-                    path: 'password',
-                    element: <PasswordPage />,
-                  },
-                  {
-                    path: 'general',
-                    element: <GeneralPage />,
-                  },
-                ],
-              },
-
-              // EXAMPLES LAYOUT
-              ...(import.meta.env.VITE_ENV === 'development'
-                ? [
                     {
-                      path: 'examples',
-                      element: <ExamplesLayout />,
+                      path: 'systems',
+                      element: <SystemsPage />,
                       children: [
                         {
                           index: true,
-                          element: <Navigate to="/examples/forms" />,
+                          element: (
+                            <Navigate to="system-settings" replace />
+                          ),
                         },
                         {
-                          path: 'forms',
+                          path: 'system-settings',
+                          element: <SystemSettingsTab />,
+                        },
+                        {
+                          path: 'system-dropdowns',
+                          element: <SystemDropdownsPage />,
                           children: [
                             {
                               index: true,
-                              element: <InputPage />,
+                              element: <Navigate to="dropdowns" replace />,
                             },
                             {
-                              path: 'textarea',
-                              element: <TextareaPage />,
+                              path: 'dropdowns',
+                              element: <DropdownsTab />,
                             },
                             {
-                              path: 'checkbox',
-                              element: <CheckboxPage />,
-                            },
-                            {
-                              path: 'radio-group',
-                              element: <RadioGroupPage />,
-                            },
-                            {
-                              path: 'react-dropzone',
-                              element: <ReactDropzonePage />,
-                            },
-                            {
-                              path: 'react-quill',
-                              element: <ReactQuillPage />,
-                            },
-                            {
-                              path: 'system-dropdown',
-                              element: <SystemDropdownPage />,
-                            },
-                            {
-                              path: 'react-select',
-                              element: <ReactSelectPage />,
+                              path: 'modules',
+                              element: <ModulesTab />,
                             },
                           ],
                         },
                         {
-                          path: 'data-table',
-                          children: [
-                            {
-                              index: true,
-                              element: <DataTableListPage />,
-                            },
-                            {
-                              path: 'grid',
-                              element: <DataTableGridPage />,
-                            },
-                            {
-                              path: 'list-grid',
-                              element: <DataTableListGridPage />,
-                            },
-                          ],
-                        },
-                        {
-                          path: 'kanban',
-                          children: [
-                            {
-                              index: true,
-                              element: <DataTableKanbanPage />,
-                            },
-                          ],
-                        },
-                        {
-                          path: 'builder',
-                          children: [
-                            {
-                              index: true,
-                              element: <CrudBuilderPage />,
-                            },
-                          ],
+                          path: 'system-logs',
+                          element: <SystemLogsTab />,
                         },
                       ],
                     },
-                  ]
-                : []),
-            ]
+                    {
+                      path: 'mails',
+                      element: <MailsPage />,
+                      children: [
+                        {
+                          index: true,
+                          element: <Navigate to="logs" replace />,
+                        },
+                        {
+                          path: 'logs',
+                          element: <MailLogsTab />,
+                        },
+                        {
+                          path: 'templates',
+                          element: <MailTemplatesTab />,
+                        },
+                      ],
+                    },
+                    {
+                      path: 'chat-ai',
+                      element: <ChatPage />,
+                    },
+                    {
+                      path: 'knowledge-base',
+                      element: <KnowledgeBasePage />,
+                    },
+                  ],
+                },
+              ]
+              : []),
+
+            // SETTINGS LAYOUT
+            {
+              path: 'settings',
+              element: <SettingsLayout />,
+              children: [
+                {
+                  index: true,
+                  element: <Navigate to="profile" replace />,
+                },
+                {
+                  path: 'profile',
+                  element: <ProfilePage />,
+                },
+                {
+                  path: 'password',
+                  element: <PasswordPage />,
+                },
+                {
+                  path: 'general',
+                  element: <GeneralPage />,
+                },
+              ],
+            },
+
+            // EXAMPLES LAYOUT
+            ...(import.meta.env.VITE_ENV === 'development'
+              ? [
+                {
+                  path: 'examples',
+                  element: <ExamplesLayout />,
+                  children: [
+                    {
+                      index: true,
+                      element: <Navigate to="/examples/forms" />,
+                    },
+                    {
+                      path: 'forms',
+                      children: [
+                        {
+                          index: true,
+                          element: <InputPage />,
+                        },
+                        {
+                          path: 'textarea',
+                          element: <TextareaPage />,
+                        },
+                        {
+                          path: 'checkbox',
+                          element: <CheckboxPage />,
+                        },
+                        {
+                          path: 'radio-group',
+                          element: <RadioGroupPage />,
+                        },
+                        {
+                          path: 'react-dropzone',
+                          element: <ReactDropzonePage />,
+                        },
+                        {
+                          path: 'react-quill',
+                          element: <ReactQuillPage />,
+                        },
+                        {
+                          path: 'system-dropdown',
+                          element: <SystemDropdownPage />,
+                        },
+                        {
+                          path: 'react-select',
+                          element: <ReactSelectPage />,
+                        },
+                      ],
+                    },
+                    {
+                      path: 'data-table',
+                      children: [
+                        {
+                          index: true,
+                          element: <DataTableListPage />,
+                        },
+                        {
+                          path: 'grid',
+                          element: <DataTableGridPage />,
+                        },
+                        {
+                          path: 'list-grid',
+                          element: <DataTableListGridPage />,
+                        },
+                      ],
+                    },
+                    {
+                      path: 'kanban',
+                      children: [
+                        {
+                          index: true,
+                          element: <DataTableKanbanPage />,
+                        },
+                      ],
+                    },
+                    {
+                      path: 'builder',
+                      children: [
+                        {
+                          index: true,
+                          element: <CrudBuilderPage />,
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ]
+              : []),
+          ]
           : []),
       ],
     },

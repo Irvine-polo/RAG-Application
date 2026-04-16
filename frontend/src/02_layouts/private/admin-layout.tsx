@@ -1,4 +1,4 @@
-import { FaChartArea, FaEnvelope, FaGears, FaUsers } from 'react-icons/fa6';
+import { FaBook, FaChartArea, FaComments, FaEnvelope, FaGears, FaUsers } from 'react-icons/fa6';
 import { Outlet } from 'react-router';
 import type { SidebarGroup } from '@/03_templates/_components/main-template-sidebar';
 import MainTemplate from '@/03_templates/main-template';
@@ -28,6 +28,16 @@ const AdminLayout = () => {
           name: 'Mails',
           url: '/admin/mails',
           icon: FaEnvelope,
+        },
+        {
+          name: 'Chat AI',
+          url: '/admin/chat-ai',
+          icon: FaComments,
+        },
+        {
+          name: 'Knowledge Base',
+          url: '/admin/knowledge-base',
+          icon: FaBook,
         },
       ],
     },

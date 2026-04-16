@@ -20,9 +20,7 @@ return new class extends Migration {
 
             // Automatically concatenated full name
             // CONCAT_WS avoids double spaces for NULL middle/suffix
-            $table->string('full_name')
-                ->storedAs("CONCAT_WS(' ', first_name, middle_name, last_name, suffix)")
-                ->index();
+            $table->string('full_name')->nullable()->index();
 
             // Other profile fields
             $table->string('avatar_path')->nullable();

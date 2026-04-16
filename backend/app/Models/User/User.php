@@ -86,4 +86,10 @@ class User extends Authenticatable implements JWTSubject {
     public function getJWTCustomClaims() {
         return [];
     }
+
+    protected static function booted(): void {
+        static::saving(function (User $user) {
+            $user->full_name = trim(preg_replace('/\s+/', ' ', "{$user->first_name} {$user->middle_name} {$user->last_name} {$user->suffix}"));
+        });
+    }
 }
